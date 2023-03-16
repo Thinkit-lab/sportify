@@ -1,7 +1,8 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sportify/screens/login.dart';
 import 'package:sportify/service/auth.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -49,7 +50,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   child: Column(
                     children: <Widget>[
                       const Text(
-                        'Enter your email address',
+                        'Forgot Password',
                         style: TextStyle(fontSize: 20.0),
                       ),
                       const SizedBox(height: 40.0),
@@ -74,10 +75,19 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(30.0),
                           onTap: () async {
+                            const CircularProgressIndicator();
+
                             if (_formKey.currentState!.validate()) {
                               await authService.resetPassword(
                                   email: _email.text.trim());
                             }
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('A password reset link was sent to your email'),
+                              ),
+                            );
+                            Get.off(()=> const Login());
                           },
                           child: Container(
                             height: 50.0,
@@ -97,7 +107,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                               ),
                             ),
                             child: const Text(
-                              'Update',
+                              'Send',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,
